@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Schedule = ({ schedule }) => {
+const Schedule = ({ schedule, removeSchedule }) => {
   const scheduleStyle = {
     border: 'solid',
     padding: 10,
@@ -16,6 +16,7 @@ const Schedule = ({ schedule }) => {
       <p><b>data wydania decyzji: </b>{ schedule.decisionDate.split('T')[0] }</p>
       <p><b>termin wycinki: </b>{ schedule.clippingDeadline.split('T')[0] }</p>
       <p><b>termin nasadzeń: </b>{ schedule.plantingDeadline.split('T')[0] }</p>
+      <button type="submit" onClick={removeSchedule}>usuń wpis</button>
     </div>
   )
 }

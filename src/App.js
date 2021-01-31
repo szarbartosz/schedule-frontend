@@ -23,6 +23,17 @@ function App() {
       })
   }
 
+  const deleteSchedule = (scheduleObject) => {
+    schedulesService
+      .remove(scheduleObject.id)
+      .then(() => {
+        setSchedules(schedules.filter(s => s.id !== scheduleObject.id))
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
   const h1Style = {
     padding: 10,
     margin: 15
@@ -36,6 +47,7 @@ function App() {
         {schedules.map(schedule =>
           <Schedule
             schedule={schedule}
+            removeSchedule={() => deleteSchedule(schedule)}
             key={schedule.id}
           />
         )}
