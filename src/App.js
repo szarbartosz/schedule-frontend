@@ -6,13 +6,16 @@ import './App.css'
 
 function App() {
   const [schedules, setSchedules] = useState([])
+  const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
     schedulesService
       .getAll()
-      .then(initialSchedules => {
-        setSchedules(initialSchedules)
-      })
+      .then(initialSchedules =>
+        setSchedules(initialSchedules.sort((x, y) =>
+          x.decisionDate > y.decisionDate ? 1 : -1
+        ))
+      )
   }, [])
 
   const addSchedule = (scheduleObject) => {
@@ -34,6 +37,25 @@ function App() {
       })
   }
 
+  const toggleVisibilityOf = id => {
+    const schedule = schedules.find(s => s.id === id)
+    const changedSchedule = { ...schedule, visible: !schedule.visible }
+
+    schedulesService
+      .update(id, changedSchedule)
+      .then(returnedSchedule => {
+        setSchedules(schedules.map(s => s.id !== id ? s : returnedSchedule))
+      })
+      .catch(() => {
+        alert(`wpis o identyfikatorze ${schedule.id} był zapisany jedynie w pamięci cache`)
+        setSchedules(schedules.filter(s => s.id !== id))
+      })
+  }
+
+  const schedulesToShow = showAll
+    ? schedules
+    : schedules.filter(s => s.visible === true)
+
   const h1Style = {
     padding: 10,
     margin: 15
@@ -43,10 +65,16 @@ function App() {
     <div>
       <h1 style={h1Style}>witaj!</h1>
       <ScheduleForm createSchedule={addSchedule} />
+      <div style={h1Style}>
+        <button onClick={() => setShowAll(!showAll)}>
+          pokaż {showAll ? 'aktualne' : 'wszystkie' }
+        </button>
+      </div>
       <div>
-        {schedules.map(schedule =>
+        {schedulesToShow.map(schedule =>
           <Schedule
             schedule={schedule}
+            toggleVisibility={() => toggleVisibilityOf(schedule.id)}
             removeSchedule={() => deleteSchedule(schedule)}
             key={schedule.id}
           />
