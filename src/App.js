@@ -6,15 +6,13 @@ import './App.css'
 
 function App() {
   const [schedules, setSchedules] = useState([])
-  const [showAll, setShowAll] = useState(true)
+  const [showAll, setShowAll] = useState(false)
 
   useEffect(() => {
     schedulesService
       .getAll()
       .then(initialSchedules =>
-        setSchedules(initialSchedules.sort((x, y) =>
-          x.decisionDate > y.decisionDate ? 1 : -1
-        ))
+        setSchedules(initialSchedules)
       )
   }, [])
 
@@ -63,7 +61,6 @@ function App() {
 
   return (
     <div>
-      <h1 style={h1Style}>witaj!</h1>
       <ScheduleForm createSchedule={addSchedule} />
       <div style={h1Style}>
         <button onClick={() => setShowAll(!showAll)}>
