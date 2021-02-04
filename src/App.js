@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import Schedule from './components/Schedule'
 import ScheduleForm from './components/ScheduleForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import ScheduleList from './components/ScheduleList'
 import schedulesService from './services/schedules-service'
 import loginService from './services/login-service'
 import './App.css'
@@ -12,6 +12,15 @@ function App() {
   const [schedules, setSchedules] = useState([])
   const [showAll, setShowAll] = useState(false)
   const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedScheduleAppUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      schedulesService.setToken(user.token)
+    }
+  }, [])
 
   useEffect(() => {
     schedulesService
@@ -27,6 +36,7 @@ function App() {
       .then(returnedSchedule => {
         setSchedules(schedules.concat(returnedSchedule))
       })
+    window.location.reload()
   }
 
   const deleteSchedule = (scheduleObject) => {
@@ -57,9 +67,12 @@ function App() {
 
   const login = async (userObject) => {
     try {
-      console.log(userObject)
       const user = await loginService.login(userObject)
-      console.log(user)
+
+      window.localStorage.setItem(
+        'loggedScheduleAppUser', JSON.stringify(user)
+      )
+      schedulesService.setToken(user.token)
       setUser(user)
     } catch (exception) {
       setErrorMessage('nieprawidłowy login lub hasło')
@@ -67,6 +80,11 @@ function App() {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const logout = () => {
+    window.localStorage.removeItem('loggedScheduleAppUser')
+    window.location.reload()
   }
 
   const schedulesToShow = showAll
@@ -84,23 +102,14 @@ function App() {
       {
         user === null
           ? <LoginForm login={login} />
-          : <ScheduleForm createSchedule={addSchedule} />
+          : <div>
+            <ScheduleForm createSchedule={addSchedule} logout={logout} />
+            <div style={h1Style}>
+              <button onClick={() => setShowAll(!showAll)}>pokaż {showAll ? 'aktualne' : 'wszystkie' }</button>
+            </div>
+            <ScheduleList schedules={schedulesToShow} toggleVisibilityOf={toggleVisibilityOf} deleteSchedule={deleteSchedule} user={user} />
+          </div>
       }
-      <div style={h1Style}>
-        <button onClick={() => setShowAll(!showAll)}>
-          pokaż {showAll ? 'aktualne' : 'wszystkie' }
-        </button>
-      </div>
-      <div>
-        {schedulesToShow.map(schedule =>
-          <Schedule
-            schedule={schedule}
-            toggleVisibility={() => toggleVisibilityOf(schedule.id)}
-            removeSchedule={() => deleteSchedule(schedule)}
-            key={schedule.id}
-          />
-        )}
-      </div>
     </div>
   )
 }

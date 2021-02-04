@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const ScheduleForm = ({ createSchedule }) => {
+const ScheduleForm = ({ createSchedule, logout }) => {
   const [object, setObject] = useState('')
   const [investor, setInvestor] = useState('')
   const [designer, setDesigner] = useState('')
@@ -130,6 +130,7 @@ const ScheduleForm = ({ createSchedule }) => {
         </div>
         <div>
           <button type="submit">zapisz </button>
+          <button onClick={logout}>wyloguj </button>
         </div>
       </form>
     </div>
