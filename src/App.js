@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import Schedule from './components/Schedule'
 import ScheduleForm from './components/ScheduleForm'
+import LoginForm from './components/LoginForm'
+import Notification from './components/Notification'
 import schedulesService from './services/schedules-service'
+import loginService from './services/login-service'
 import './App.css'
 
 function App() {
+  const [errorMessage, setErrorMessage] = useState(null)
   const [schedules, setSchedules] = useState([])
   const [showAll, setShowAll] = useState(false)
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     schedulesService
@@ -50,6 +55,20 @@ function App() {
       })
   }
 
+  const login = async (userObject) => {
+    try {
+      console.log(userObject)
+      const user = await loginService.login(userObject)
+      console.log(user)
+      setUser(user)
+    } catch (exception) {
+      setErrorMessage('nieprawidłowy login lub hasło')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const schedulesToShow = showAll
     ? schedules
     : schedules.filter(s => s.visible === true)
@@ -61,7 +80,12 @@ function App() {
 
   return (
     <div>
-      <ScheduleForm createSchedule={addSchedule} />
+      <Notification message={errorMessage} />
+      {
+        user === null
+          ? <LoginForm login={login} />
+          : <ScheduleForm createSchedule={addSchedule} />
+      }
       <div style={h1Style}>
         <button onClick={() => setShowAll(!showAll)}>
           pokaż {showAll ? 'aktualne' : 'wszystkie' }
