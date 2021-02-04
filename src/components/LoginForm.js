@@ -16,14 +16,8 @@ const LoginForm = ({ login }) => {
     setPassword('')
   }
 
-  const loginFormStyle = {
-    border: 'solid',
-    padding: 10,
-    margin: 15
-  }
-
   return (
-    <div style={loginFormStyle}>
+    <div>
       <h1>zaloguj się</h1>
       <form onSubmit={handleLogin}>
         <div>
@@ -44,7 +38,7 @@ const LoginForm = ({ login }) => {
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <button type="submit">zaloguj</button>
       </form>
     </div>
   )

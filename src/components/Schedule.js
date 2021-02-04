@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const Schedule = ({ schedule, removeSchedule, toggleVisibility }) => {
+  const [expanded, setExpanded] = useState(false)
+
   const label = schedule.visible
     ? 'oznacz jako nieaktualne'
     : 'oznacz jako aktualne'
 
   const showWhenClipping = { display: schedule.clipping ? '' : 'none' }
   const showWhenPlanting = { display: schedule.clipping ? 'none' : '' }
+
+  const hideWhenExpanded = { display: expanded ? 'none' : '' }
+  const showWhenExpanded = { display: expanded ? '' : 'none' }
 
   const scheduleStyle = {
     border: 'solid',
@@ -75,15 +80,20 @@ const Schedule = ({ schedule, removeSchedule, toggleVisibility }) => {
         <p style={deadlineIsComing}><b>dni po terminie: {-days}</b></p>
       </div>
       <p><b>obiekt: </b>{ schedule.object }</p>
-      <p><b>inwestor: </b>{ schedule.investor }</p>
-      <p><b>projektant: </b>{ schedule.designer }</p>
-      <p><b>data złożenia wniosku: </b>{ schedule.applicationDate.split('T')[0] }</p>
-      <p><b>data wydania decyzji: </b>{ schedule.decisionDate.split('T')[0] }</p>
       <p style={showWhenClipping}><b>termin wycinki: </b>{ schedule.deadline.split('T')[0] }</p>
       <p style={showWhenPlanting}><b>termin nasadzeń: </b>{ schedule.deadline.split('T')[0] }</p>
-      {/* <p>{mainDate}</p> */}
-      <button type="submit" onClick={removeSchedule}>usuń wpis</button>
-      <button type="submit" onClick={toggleVisibility}>{label}</button>
+      <div style={hideWhenExpanded}>
+        <button onClick={() => setExpanded(!expanded)}>pokaż więcej</button>
+      </div>
+      <div style={showWhenExpanded}>
+        <p><b>inwestor: </b>{ schedule.investor }</p>
+        <p><b>projektant: </b>{ schedule.designer }</p>
+        <p><b>data złożenia wniosku: </b>{ schedule.applicationDate.split('T')[0] }</p>
+        <p><b>data wydania decyzji: </b>{ schedule.decisionDate.split('T')[0] }</p>
+        <button onClick={() => setExpanded(!expanded)}>pokaż mniej</button>
+        <button type="submit" onClick={removeSchedule}>usuń wpis</button>
+        <button type="submit" onClick={toggleVisibility}>{label}</button>
+      </div>
     </div>
   )
 }

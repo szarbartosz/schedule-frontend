@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import ScheduleForm from './components/ScheduleForm'
-import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import ScheduleList from './components/ScheduleList'
 import schedulesService from './services/schedules-service'
 import loginService from './services/login-service'
+import userService from './services/user-service'
 import './App.css'
+import LoginPanel from './components/LoginPanel'
 
 function App() {
   const [errorMessage, setErrorMessage] = useState(null)
@@ -65,6 +66,18 @@ function App() {
       })
   }
 
+  const register = async (userObject) => {
+    try {
+      const user = await userService.register(userObject)
+      console.log(user)
+    } catch (exception) {
+      setErrorMessage('coś poszło nie tak :(')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const login = async (userObject) => {
     try {
       const user = await loginService.login(userObject)
@@ -101,7 +114,7 @@ function App() {
       <Notification message={errorMessage} />
       {
         user === null
-          ? <LoginForm login={login} />
+          ? <LoginPanel login={login} register={register} />
           : <div>
             <ScheduleForm createSchedule={addSchedule} logout={logout} />
             <div style={h1Style}>
