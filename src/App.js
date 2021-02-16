@@ -37,7 +37,6 @@ function App() {
       .then(returnedSchedule => {
         setSchedules(schedules.concat(returnedSchedule))
       })
-    window.location.reload()
   }
 
   const deleteSchedule = (scheduleObject) => {
@@ -110,7 +109,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div id="outer-container">
       <Notification message={errorMessage} />
       {
         user === null

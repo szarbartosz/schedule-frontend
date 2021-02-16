@@ -133,6 +133,7 @@ const ScheduleForm = ({ createSchedule, logout }) => {
           <button onClick={logout}>wyloguj </button>
         </div>
       </form>
+      <br></br>
     </div>
   )
 }

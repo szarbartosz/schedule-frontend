@@ -19,14 +19,16 @@ const LoginPanel = ({ login, register }) => {
   }
 
   return (
-    <div style={loginPanelStyle}>
-      <div style={showWhenRegistered}>
-        <LoginForm login={login} />
-        nie masz konta? <button onClick={toggleRegistered}>zarejestruj się</button>
-      </div>
-      <div style={showWhenUnregistered}>
-        <RegistrationForm register={register} />
-        masz już konto? <button onClick={toggleRegistered}>zaloguj się</button>
+    <div>
+      <div style={loginPanelStyle}>
+        <div style={showWhenRegistered}>
+          <LoginForm login={login} />
+            nie masz konta? <button onClick={toggleRegistered}>zarejestruj się</button>
+        </div>
+        <div style={showWhenUnregistered}>
+          <RegistrationForm register={register} />
+            masz już konto? <button onClick={toggleRegistered}>zaloguj się</button>
+        </div>
       </div>
     </div>
   )
