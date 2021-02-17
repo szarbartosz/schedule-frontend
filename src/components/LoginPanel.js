@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import LoginForm from './LoginForm'
 import RegistrationForm from './RegistrationForm'
 
-const LoginPanel = ({ login, register }) => {
+const LoginPanel = () => {
   const [registered, setRegistered] = useState(true)
 
   const showWhenRegistered = { display: registered ? '' : 'none' }
@@ -22,11 +22,11 @@ const LoginPanel = ({ login, register }) => {
     <div>
       <div style={loginPanelStyle}>
         <div style={showWhenRegistered}>
-          <LoginForm login={login} />
+          <LoginForm />
             nie masz konta? <button onClick={toggleRegistered}>zarejestruj się</button>
         </div>
         <div style={showWhenUnregistered}>
-          <RegistrationForm register={register} />
+          <RegistrationForm />
             masz już konto? <button onClick={toggleRegistered}>zaloguj się</button>
         </div>
       </div>

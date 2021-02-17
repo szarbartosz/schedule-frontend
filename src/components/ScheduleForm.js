@@ -1,8 +1,9 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { createSchedule } from '../reducers/scheduleReducer'
+import { logout } from '../reducers/userReducer'
 
-const ScheduleForm = ({ logout }) => {
+const ScheduleForm = () => {
   const dispatch = useDispatch()
 
   const addSchedule = (event) => {
@@ -87,7 +88,7 @@ const ScheduleForm = ({ logout }) => {
         </div>
         <div>
           <button type="submit">zapisz </button>
-          <button onClick={logout}>wyloguj </button>
+          <button onClick={() => dispatch(logout())}>wyloguj </button>
         </div>
       </form>
       <br></br>

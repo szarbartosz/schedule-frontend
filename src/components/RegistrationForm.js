@@ -1,22 +1,24 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { register } from '../reducers/userReducer'
 
-const LoginForm = ({ register }) => {
-  const [name, setName] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+const LoginForm = () => {
+  const dispatch = useDispatch()
 
   const handleRegistration = async (event) => {
     event.preventDefault()
 
-    register({
-      name: name,
-      username: username,
-      password: password
-    })
+    const newUser = {
+      name: event.target.registername.value,
+      username: event.target.registerusername.value,
+      password: event.target.registerpassword.value
+    }
 
-    setName('')
-    setUsername('')
-    setPassword('')
+    event.target.registername.value = ''
+    event.target.registerusername.value = ''
+    event.target.registerpassword.value = ''
+
+    dispatch(register(newUser))
   }
 
   return (
@@ -26,28 +28,22 @@ const LoginForm = ({ register }) => {
         <div>
           <label htmlFor="registername">imię </label>
           <input
-            id="registername"
+            name="registername"
             type="text"
-            value={name}
-            onChange={({ target }) => setName(target.value)}
           />
         </div>
         <div>
           <label htmlFor="registerusername">login </label>
           <input
-            id="registerusername"
+            name="registerusername"
             type="text"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
           <label htmlFor="registerpassword">hasło </label>
           <input
-            id="registerpassword"
+            name="registerpassword"
             type="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
           />
         </div>
         <button type="submit">zarejestruj</button>
