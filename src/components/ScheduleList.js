@@ -1,10 +1,10 @@
 import React from 'react'
 import Schedule from './Schedule'
 
-const ScheduleList = ({ schedules, toggleVisibilityOf, user }) => {
+const ScheduleList = ({ schedules, toggleVisibilityOf }) => {
   return (
     <div>
-      {schedules.filter(s => s.user.username === user.username).map(schedule =>
+      {schedules.map(schedule =>
         <Schedule
           schedule={schedule}
           toggleVisibility={() => toggleVisibilityOf(schedule.id)}

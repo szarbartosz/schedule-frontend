@@ -5,7 +5,7 @@ const scheduleReducer = (state = [], action) => {
   case '/schedules/init':
     return action.data
   case '/schedules/create':
-    return [...state, action.data]
+    return [...state, ...action.data]
   case '/schedules/remove':
     return state.filter(schedule => schedule.id !== action.data.id)
   case '/schedules/toggle':

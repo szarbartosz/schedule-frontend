@@ -15,15 +15,15 @@ function App() {
   const [showAll, setShowAll] = useState(false)
 
   useEffect(() => {
-    dispatch(initSchedules())
-  }, [dispatch])
-
-  useEffect(() => {
     dispatch(initUser())
   }, [dispatch])
 
-  const schedules = useSelector(state => state.schedules)
+  useEffect(() => {
+    dispatch(initSchedules())
+  }, [dispatch])
+
   const user = useSelector(state => state.user)
+  const schedules = useSelector(state => state.schedules)
 
   const schedulesToShow = showAll
     ? schedules
