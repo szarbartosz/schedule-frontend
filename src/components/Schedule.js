@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { removeSchedule, toggleVisibility } from '../reducers/scheduleReducer'
+import Countdown from './Countdown'
 
 const Schedule = ({ schedule }) => {
   const dispatch = useDispatch()
@@ -18,66 +19,9 @@ const Schedule = ({ schedule }) => {
     margin: 15
   }
 
-  const calculateColor = () => {
-    const ddeadline = new Date(schedule.deadline)
-    const currentDate = new Date()
-
-    const timeDiff = ddeadline.getTime() - currentDate.getTime()
-    const dayDiff = timeDiff / (1000 * 3600 * 24)
-    const hourDiff = timeDiff / 36e5
-
-    if (dayDiff < 0) {
-      return [
-        {
-          color: 'gray'
-        },
-        dayDiff.toFixed(0)
-      ]
-    } else if (dayDiff < 1) {
-      return [
-        {
-          color: 'darkred'
-        },
-        null,
-        hourDiff.toFixed(0)
-      ]
-    } else if (dayDiff < 14) {
-      return [
-        {
-          color: 'red'
-        },
-        dayDiff.toFixed(0)
-      ]
-    } else {
-      return [
-        {
-          color: 'green'
-        },
-        dayDiff.toFixed(0)
-      ]
-    }
-  }
-
-  const result = calculateColor()
-  const deadlineIsComing = result[0]
-  const days = result[1]
-  const hours = result[2]
-
-  const showBeforeDeadline = { display: days >= 1 ? '' : 'none' }
-  const showOnDeadlineDay = { display: days >= 0 && days < 1 ? '': 'none' }
-  const showAfterDeadline = { display: days < 0 ? '' : 'none' }
-
   return (
     <div style={scheduleStyle}>
-      <div style={showBeforeDeadline}>
-        <p style={deadlineIsComing}><b>dni do upłynięcia terminu: {days}</b></p>
-      </div>
-      <div style={showOnDeadlineDay}>
-        <p style={deadlineIsComing}><b>godzin do upłynięcia terminu: {hours}</b></p>
-      </div>
-      <div style={showAfterDeadline}>
-        <p style={deadlineIsComing}><b>dni po terminie: {-days}</b></p>
-      </div>
+      <Countdown schedule={schedule} />
       <p><b>obiekt: </b>{ schedule.object }</p>
       <p style={showWhenClipping}><b>termin wycinki: </b>{ schedule.deadline.split('T')[0] }</p>
       <p style={showWhenPlanting}><b>termin nasadzeń: </b>{ schedule.deadline.split('T')[0] }</p>

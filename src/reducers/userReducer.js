@@ -7,7 +7,6 @@ const userReducer = (state = null, action) => {
   case '/users/init':
     return action.data
   case '/users/register':
-    console.log(action.data)
     return state
   case '/users/login':
     return action.data
@@ -44,7 +43,6 @@ export const register = (userObject) => {
 export const login = (userObject) => {
   return async dispatch => {
     const user = await loginService.login(userObject)
-    console.log(user)
     window.localStorage.setItem(
       'loggedScheduleAppUser', JSON.stringify(user)
     )

@@ -3,6 +3,7 @@ import scheduleService from '../services/schedule-service'
 const scheduleReducer = (state = [], action) => {
   switch (action.type) {
   case '/schedules/init':
+    if (action.data === null) return state
     return action.data
   case '/schedules/create':
     return [...state, ...action.data]

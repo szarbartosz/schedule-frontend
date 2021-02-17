@@ -1,9 +1,11 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { login } from '../reducers/userReducer'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -16,7 +18,8 @@ const LoginForm = () => {
     event.target.username.value = ''
     event.target.password.value = ''
 
-    dispatch(login(user))
+    await dispatch(login(user))
+    history.push('/schedules')
   }
 
   return (

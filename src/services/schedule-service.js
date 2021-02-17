@@ -12,7 +12,7 @@ const setToken = newToken => {
 }
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl, config)
+  const response = await axios.get(baseUrl)
   return response.data
 }
 

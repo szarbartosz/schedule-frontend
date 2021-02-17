@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
+import Schedule from './components/Schedule'
 import ScheduleForm from './components/ScheduleForm'
-// import Notification from './components/Notification'
 import ScheduleList from './components/ScheduleList'
 import './App.css'
 import LoginPanel from './components/LoginPanel'
 import { useDispatch, useSelector } from 'react-redux'
+import { initUser, logout } from './reducers/userReducer'
+import {
+  Link,
+  Redirect,
+  Route,
+  Switch,
+  useRouteMatch
+} from 'react-router-dom'
 import { initSchedules } from './reducers/scheduleReducer'
-import { initUser } from './reducers/userReducer'
 
 function App() {
   const dispatch = useDispatch()
-
-  // const [errorMessage, setErrorMessage] = useState(null)
-  const [showAll, setShowAll] = useState(false)
 
   useEffect(() => {
     dispatch(initUser())
@@ -25,29 +29,37 @@ function App() {
   const user = useSelector(state => state.user)
   const schedules = useSelector(state => state.schedules)
 
-  const schedulesToShow = showAll
-    ? schedules
-    : schedules.filter(s => s.visible === true)
-
-  const h1Style = {
-    padding: 10,
-    margin: 15
-  }
+  const scheduleMatch = useRouteMatch('/schedules/:id')
+  const matchingSchedule = scheduleMatch
+    ? schedules.find(s => s.id === scheduleMatch.params.id)
+    : null
 
   return (
     <div id="outer-container">
       {/* <Notification message={errorMessage} /> */}
-      {
-        user === null
-          ? <LoginPanel />
-          : <div>
-            <ScheduleForm />
-            <div style={h1Style}>
-              <button onClick={() => setShowAll(!showAll)}>pokaż {showAll ? 'aktualne' : 'wszystkie' }</button>
-            </div>
-            <ScheduleList schedules={schedulesToShow} user={user} />
+      <div>
+        {user !== null
+          ? <div>
+            <Link to="/schedules">nadchodzące terminy</Link>
+            <Link to="/schedules/add">dodaj nowy</Link>
+            <button onClick={() => dispatch(logout())}>wyloguj</button>
           </div>
-      }
+          : null}
+      </div>
+      <Switch>
+        <Route path="/schedules/add">
+          {window.localStorage.getItem('loggedScheduleAppUser') ? <ScheduleForm /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/schedules/:id">
+          {window.localStorage.getItem('loggedScheduleAppUser') ? <Schedule schedule={matchingSchedule} /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/schedules">
+          {window.localStorage.getItem('loggedScheduleAppUser') ? <ScheduleList schedules={schedules} user={user} /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/login">
+          <LoginPanel />
+        </Route>
+      </Switch>
     </div>
   )
 }
