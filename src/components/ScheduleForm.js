@@ -1,61 +1,32 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { createSchedule } from '../reducers/scheduleReducer'
 
-const ScheduleForm = ({ createSchedule, logout }) => {
-  const [object, setObject] = useState('')
-  const [investor, setInvestor] = useState('')
-  const [designer, setDesigner] = useState('')
-  const [applicationDate, setApplicationDate] = useState('')
-  const [decisionDate, setDecisionDate] = useState('')
-  const [clippingDeadline, setClippingDeadline] = useState('')
-  const [plantingDeadline, setPlantingDeadline] = useState('')
-
-  const handleObjectChange = (event) => {
-    setObject(event.target.value)
-  }
-
-  const handleInvestorChange = (event) => {
-    setInvestor(event.target.value)
-  }
-
-  const handleDesignerChange = (event) => {
-    setDesigner(event.target.value)
-  }
-
-  const handleApplicationDateChange = (event) => {
-    setApplicationDate(event.target.value)
-  }
-
-  const handleDecisionDateChange = (event) => {
-    setDecisionDate(event.target.value)
-  }
-
-  const handleClippingDeadlineChange = (event) => {
-    setClippingDeadline(event.target.value)
-  }
-
-  const handlePlantingDeadlineChange = (event) => {
-    setPlantingDeadline(event.target.value)
-  }
+const ScheduleForm = ({ logout }) => {
+  const dispatch = useDispatch()
 
   const addSchedule = (event) => {
     event.preventDefault()
-    createSchedule({
-      object: object,
-      investor: investor,
-      designer: designer,
-      applicationDate: applicationDate,
-      decisionDate: decisionDate,
-      clippingDeadline: clippingDeadline,
-      plantingDeadline: plantingDeadline
-    })
 
-    setObject('')
-    setInvestor('')
-    setDesigner('')
-    setApplicationDate('')
-    setDecisionDate('')
-    setClippingDeadline('')
-    setPlantingDeadline('')
+    const scheduleObject = {
+      object: event.target.object.value,
+      investor: event.target.investor.value,
+      designer: event.target.designer.value,
+      applicationDate: event.target.applicationDate.value,
+      decisionDate: event.target.decisionDate.value,
+      clippingDeadline: event.target.clippingDeadline.value,
+      plantingDeadline: event.target.plantingDeadline.value
+    }
+
+    event.target.object.value = '',
+    event.target.investor.value = '',
+    event.target.designer.value = '',
+    event.target.applicationDate.value = '',
+    event.target.decisionDate.value = '',
+    event.target.clippingDeadline.value = '',
+    event.target.plantingDeadline.value = ''
+
+    dispatch(createSchedule(scheduleObject))
   }
 
   const scheduleFormStyle = {
@@ -71,61 +42,47 @@ const ScheduleForm = ({ createSchedule, logout }) => {
         <div>
           <label htmlFor="object">obiekt </label>
           <input
-            id="object"
-            value={object}
-            onChange={handleObjectChange}
+            name="object"
           />
         </div>
         <div>
           <label htmlFor="investor">inwestor </label>
           <input
-            id="investor"
-            value={investor}
-            onChange={handleInvestorChange}
+            name="investor"
           />
         </div>
         <div>
           <label htmlFor="designer">projektant </label>
           <input
-            id="designer"
-            value={designer}
-            onChange={handleDesignerChange}
+            name="designer"
           />
         </div>
         <div>
           <label htmlFor="applicationDate">data złożenia wniosku </label>
           <input
-            id="applicationDate"
+            name="applicationDate"
             type="date"
-            value={applicationDate}
-            onChange={handleApplicationDateChange}
           />
         </div>
         <div>
           <label htmlFor="decisionDate">data wydania decyzji </label>
           <input
-            id="decisionDate"
+            name="decisionDate"
             type="date"
-            value={decisionDate}
-            onChange={handleDecisionDateChange}
           />
         </div>
         <div>
           <label htmlFor="clippingDeadline">termin wycinki </label>
           <input
-            id="clippingDeadline"
+            name="clippingDeadline"
             type="date"
-            value={clippingDeadline}
-            onChange={handleClippingDeadlineChange}
           />
         </div>
         <div>
           <label htmlFor="plantingDeadline">termin nasadzeń </label>
           <input
-            id="plantingDeadline"
+            name="plantingDeadline"
             type="date"
-            value={plantingDeadline}
-            onChange={handlePlantingDeadlineChange}
           />
         </div>
         <div>
