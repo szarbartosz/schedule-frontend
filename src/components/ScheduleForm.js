@@ -1,12 +1,17 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { createSchedule } from '../reducers/scheduleReducer'
-import { logout } from '../reducers/userReducer'
+import {
+  Form,
+  Button
+} from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
 
 const ScheduleForm = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
-  const addSchedule = (event) => {
+  const addSchedule = async (event) => {
     event.preventDefault()
 
     const scheduleObject = {
@@ -27,72 +32,121 @@ const ScheduleForm = () => {
     event.target.clippingDeadline.value = '',
     event.target.plantingDeadline.value = ''
 
-    dispatch(createSchedule(scheduleObject))
-  }
-
-  const scheduleFormStyle = {
-    border: 'solid',
-    padding: 10,
-    margin: 15
+    await dispatch(createSchedule(scheduleObject))
+    history.push('/schedules')
   }
 
   return (
-    <div  style={scheduleFormStyle}>
-      <h1>dodaj nowy wpis</h1>
-      <form onSubmit={addSchedule}>
-        <div>
-          <label htmlFor="object">obiekt </label>
-          <input
+    <div>
+      <br></br>
+      <h2>dodaj nowy wpis</h2>
+      <br></br>
+      <Form onSubmit={addSchedule}>
+        <Form.Group>
+          <Form.Label>obiekt</Form.Label>
+          <Form.Control
+            type="text"
             name="object"
           />
-        </div>
-        <div>
-          <label htmlFor="investor">inwestor </label>
-          <input
+          <br></br>
+          <Form.Label>inwestor</Form.Label>
+          <Form.Control
+            type="text"
             name="investor"
           />
-        </div>
-        <div>
-          <label htmlFor="designer">projektant </label>
-          <input
+          <br></br>
+          <Form.Label>projektant</Form.Label>
+          <Form.Control
+            type="text"
             name="designer"
           />
-        </div>
-        <div>
-          <label htmlFor="applicationDate">data złożenia wniosku </label>
-          <input
+          <br></br>
+          <Form.Label>data złożenia wniosku</Form.Label>
+          <Form.Control
+            type="date"
             name="applicationDate"
-            type="date"
           />
-        </div>
-        <div>
-          <label htmlFor="decisionDate">data wydania decyzji </label>
-          <input
+          <br></br>
+          <Form.Label>data wydania decyzji</Form.Label>
+          <Form.Control
+            type="date"
             name="decisionDate"
-            type="date"
           />
-        </div>
-        <div>
-          <label htmlFor="clippingDeadline">termin wycinki </label>
-          <input
+          <br></br>
+          <Form.Label>termin wycinki</Form.Label>
+          <Form.Control
+            type="date"
             name="clippingDeadline"
-            type="date"
           />
-        </div>
-        <div>
-          <label htmlFor="plantingDeadline">termin nasadzeń </label>
-          <input
+          <br></br>
+          <Form.Label>termin nasadzeń</Form.Label>
+          <Form.Control
+            type="date"
             name="plantingDeadline"
-            type="date"
           />
-        </div>
-        <div>
-          <button type="submit">zapisz </button>
-          <button onClick={() => dispatch(logout())}>wyloguj </button>
-        </div>
-      </form>
-      <br></br>
+          <br></br>
+        </Form.Group>
+        <Button variant="primary" type="submit" size="sm" block>
+          zapisz
+        </Button>
+      </Form>
     </div>
+    // <div  style={scheduleFormStyle}>
+    //   <h1>dodaj nowy wpis</h1>
+    //   <form onSubmit={addSchedule}>
+    //     <div>
+    //       <label htmlFor="object">obiekt </label>
+    //       <input
+    //         name="object"
+    //       />
+    //     </div>
+    //     <div>
+    //       <label htmlFor="investor">inwestor </label>
+    //       <input
+    //         name="investor"
+    //       />
+    //     </div>
+    //     <div>
+    //       <label htmlFor="designer">projektant </label>
+    //       <input
+    //         name="designer"
+    //       />
+    //     </div>
+    //     <div>
+    //       <label htmlFor="applicationDate">data złożenia wniosku </label>
+    //       <input
+    //         name="applicationDate"
+    //         type="date"
+    //       />
+    //     </div>
+    //     <div>
+    //       <label htmlFor="decisionDate">data wydania decyzji </label>
+    //       <input
+    //         name="decisionDate"
+    //         type="date"
+    //       />
+    //     </div>
+    //     <div>
+    //       <label htmlFor="clippingDeadline">termin wycinki </label>
+    //       <input
+    //         name="clippingDeadline"
+    //         type="date"
+    //       />
+    //     </div>
+    //     <div>
+    //       <label htmlFor="plantingDeadline">termin nasadzeń </label>
+    //       <input
+    //         name="plantingDeadline"
+    //         type="date"
+    //       />
+    //     </div>
+    //     <div>
+    //       <button type="submit">zapisz </button>
+    //       <button onClick={() => dispatch(logout())}>wyloguj </button>
+    //     </div>
+    //   </form>
+    //   <br></br>
+    // </div>
   )
 }
 

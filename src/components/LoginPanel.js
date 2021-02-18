@@ -12,23 +12,16 @@ const LoginPanel = () => {
     setRegistered(!registered)
   }
 
-  const loginPanelStyle = {
-    border: 'solid',
-    padding: 10,
-    margin: 15
-  }
-
   return (
     <div>
-      <div style={loginPanelStyle}>
-        <div style={showWhenRegistered}>
-          <LoginForm />
-            nie masz konta? <button onClick={toggleRegistered}>zarejestruj się</button>
-        </div>
-        <div style={showWhenUnregistered}>
-          <RegistrationForm />
-            masz już konto? <button onClick={toggleRegistered}>zaloguj się</button>
-        </div>
+      <h1>witaj!</h1>
+      <div style={showWhenRegistered}>
+        <LoginForm />
+        nie masz konta? <button onClick={toggleRegistered}>zarejestruj się</button>
+      </div>
+      <div style={showWhenUnregistered}>
+        <RegistrationForm />
+        masz już konto? <button onClick={toggleRegistered}>zaloguj się</button>
       </div>
     </div>
   )

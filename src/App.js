@@ -1,19 +1,26 @@
 import React, { useEffect } from 'react'
+import './App.css'
+import LoginForm from './components/LoginForm'
+import RegistrationForm from './components/RegistrationForm'
 import Schedule from './components/Schedule'
 import ScheduleForm from './components/ScheduleForm'
 import ScheduleList from './components/ScheduleList'
-import './App.css'
-import LoginPanel from './components/LoginPanel'
 import { useDispatch, useSelector } from 'react-redux'
+import { initSchedules } from './reducers/scheduleReducer'
 import { initUser, logout } from './reducers/userReducer'
 import {
-  Link,
+  // Link,
   Redirect,
   Route,
   Switch,
   useRouteMatch
 } from 'react-router-dom'
-import { initSchedules } from './reducers/scheduleReducer'
+import {
+  Nav,
+  Navbar,
+  Button
+} from 'react-bootstrap'
+
 
 function App() {
   const dispatch = useDispatch()
@@ -35,18 +42,56 @@ function App() {
     : null
 
   return (
-    <div id="outer-container">
+    <div className="container">
       {/* <Notification message={errorMessage} /> */}
       <div>
         {user !== null
-          ? <div>
-            <Link to="/schedules">nadchodzące terminy</Link>
-            <Link to="/schedules/add">dodaj nowy</Link>
-            <button onClick={() => dispatch(logout())}>wyloguj</button>
-          </div>
-          : null}
+          ?
+          <Navbar bg="light">
+            <Nav>
+              <Nav.Item>
+                <Nav.Link href="/schedules">
+                  nadchodzące terminy
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link href="/schedules/add">
+                  dodaj nowy
+                </Nav.Link>
+              </Nav.Item>
+            </Nav>
+            <Navbar.Collapse className="justify-content-end">
+              <Navbar.Text>
+                <span className="mx-2">zalogowano jako: <a>{user.name}</a></span>
+              </Navbar.Text>
+              <Navbar.Text>
+                <Button variant="danger" size="sm" onClick={() => dispatch(logout())}>wyloguj</Button>
+              </Navbar.Text>
+            </Navbar.Collapse>
+          </Navbar>
+          :
+
+          <Nav className="justify-content-end">
+            <Nav.Item>
+              <Nav.Link href="/login">
+                <Button variant="outline-secondary" size="sm">logowanie</Button>
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link href="/register">
+                <Button variant="outline-secondary" size="sm">rejestracja</Button>
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+        }
       </div>
       <Switch>
+        <Route path="/login">
+          <LoginForm />
+        </Route>
+        <Route path="/register">
+          <RegistrationForm />
+        </Route>
         <Route path="/schedules/add">
           {window.localStorage.getItem('loggedScheduleAppUser') ? <ScheduleForm /> : <Redirect to="/login" />}
         </Route>
@@ -55,9 +100,6 @@ function App() {
         </Route>
         <Route path="/schedules">
           {window.localStorage.getItem('loggedScheduleAppUser') ? <ScheduleList schedules={schedules} user={user} /> : <Redirect to="/login" />}
-        </Route>
-        <Route path="/login">
-          <LoginPanel />
         </Route>
       </Switch>
     </div>

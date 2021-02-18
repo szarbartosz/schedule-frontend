@@ -2,6 +2,10 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { removeSchedule, toggleVisibility } from '../reducers/scheduleReducer'
 import Countdown from './Countdown'
+import {
+  Table,
+  Button
+} from 'react-bootstrap'
 
 const Schedule = ({ schedule }) => {
   const dispatch = useDispatch()
@@ -13,24 +17,43 @@ const Schedule = ({ schedule }) => {
   const showWhenClipping = { display: schedule.clipping ? '' : 'none' }
   const showWhenPlanting = { display: schedule.clipping ? 'none' : '' }
 
-  const scheduleStyle = {
-    border: 'solid',
-    padding: 10,
-    margin: 15
-  }
-
   return (
-    <div style={scheduleStyle}>
-      <Countdown schedule={schedule} />
-      <p><b>obiekt: </b>{ schedule.object }</p>
-      <p style={showWhenClipping}><b>termin wycinki: </b>{ schedule.deadline.split('T')[0] }</p>
-      <p style={showWhenPlanting}><b>termin nasadzeń: </b>{ schedule.deadline.split('T')[0] }</p>
-      <p><b>inwestor: </b>{ schedule.investor }</p>
-      <p><b>projektant: </b>{ schedule.designer }</p>
-      <p><b>data złożenia wniosku: </b>{ schedule.applicationDate.split('T')[0] }</p>
-      <p><b>data wydania decyzji: </b>{ schedule.decisionDate.split('T')[0] }</p>
-      <button type="submit" onClick={() => dispatch(removeSchedule(schedule.id))}>usuń wpis</button>
-      <button type="submit" onClick={() => dispatch(toggleVisibility(schedule))}>{label}</button>
+    <div>
+      <Countdown schedule={Schedule} />
+      <Table>
+        <tbody>
+          <tr>
+            <th>obiekt</th>
+            <td>{schedule.object}</td>
+          </tr>
+          <tr style={showWhenClipping}>
+            <th>termin wycinki</th>
+            <td>{ schedule.deadline.split('T')[0] }</td>
+          </tr>
+          <tr style={showWhenPlanting}>
+            <th>termin nasadzeń</th>
+            <td>{ schedule.deadline.split('T')[0] }</td>
+          </tr>
+          <tr>
+            <th>inwestor</th>
+            <td>{schedule.investor}</td>
+          </tr>
+          <tr>
+            <th>projektant</th>
+            <td>{schedule.designer}</td>
+          </tr>
+          <tr>
+            <th>data złożenia wniosku</th>
+            <td>{ schedule.applicationDate.split('T')[0] }</td>
+          </tr>
+          <tr>
+            <th>data wydania decyzji</th>
+            <td>{ schedule.decisionDate.split('T')[0] }</td>
+          </tr>
+        </tbody>
+      </Table>
+      <Button variant="danger" size="sm" onClick={() => dispatch(removeSchedule(schedule.id))}>usuń wpis</Button>{' '}
+      <Button variant="secondary" size="sm" onClick={() => dispatch(toggleVisibility(schedule))}>{label}</Button>
     </div>
   )
 }

@@ -1,6 +1,10 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { register } from '../reducers/userReducer'
+import {
+  Form,
+  Button
+} from 'react-bootstrap'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
@@ -23,31 +27,32 @@ const LoginForm = () => {
 
   return (
     <div>
-      <h1>zarejestruj się</h1>
-      <form onSubmit={handleRegistration}>
-        <div>
-          <label htmlFor="registername">imię </label>
-          <input
+      <h3>zarejestruj się</h3>
+      <br></br>
+      <Form onSubmit={handleRegistration}>
+        <Form.Group>
+          <Form.Label>imię</Form.Label>
+          <Form.Control
+            type="text"
             name="registername"
-            type="text"
           />
-        </div>
-        <div>
-          <label htmlFor="registerusername">login </label>
-          <input
+          <br></br>
+          <Form.Label>login</Form.Label>
+          <Form.Control
+            type="text"
             name="registerusername"
-            type="text"
           />
-        </div>
-        <div>
-          <label htmlFor="registerpassword">hasło </label>
-          <input
-            name="registerpassword"
+          <br></br>
+          <Form.Label>hasło</Form.Label>
+          <Form.Control
             type="password"
+            name="registerpassword"
           />
-        </div>
-        <button type="submit">zarejestruj</button>
-      </form>
+        </Form.Group>
+        <Button variant="primary" type="submit" size="sm">
+          zarejestruj
+        </Button>
+      </Form>
     </div>
   )
 }

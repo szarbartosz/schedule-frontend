@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Countdown from './Countdown'
-// import Schedule from './Schedule'
+import {
+  Button,
+  Table
+} from 'react-bootstrap'
 
 const ScheduleList = ({ schedules }) => {
   const [showUpToDate, setShowUpToDate] = useState(true)
@@ -14,10 +17,26 @@ const ScheduleList = ({ schedules }) => {
 
   return (
     <div>
-      <button onClick={() => setShowUpToDate(!showUpToDate)}>
-          pokaż {showUpToDate ? 'nieaktualne' : 'aktualne' }
-      </button>
-      <table>
+      <Button className="my-2" variant="primary" size="sm" block onClick={() => setShowUpToDate(!showUpToDate)}>
+        pokaż {showUpToDate ? 'nieaktualne' : 'aktualne' }
+      </Button>
+      <Table striped>
+        <tbody>
+          {schedulesToShow.filter(s => s.user.username === user.username).map(schedule =>
+            <tr key={schedule.id}>
+              <td>
+                <Link to={`/schedules/${schedule.id}`}>{schedule.object}</Link>
+              </td>
+              <td>
+                {schedule.clipping ? <p>wycinka</p> : <p>nasadzenia</p>}
+              </td>
+              <td>
+                <Countdown schedule={schedule} />
+              </td>
+            </tr>)}
+        </tbody>
+      </Table>
+      {/* <table>
         <tbody>
           {schedulesToShow.filter(s => s.user.username === user.username).map(schedule =>
             <tr key={schedule.id}>
@@ -28,18 +47,8 @@ const ScheduleList = ({ schedules }) => {
               </td>
             </tr>)}
         </tbody>
-      </table>
+      </table> */}
     </div>
-
-  // <div>
-  //   {schedules.map(schedule =>
-  //     <Schedule
-  //       schedule={schedule}
-  //       toggleVisibility={() => toggleVisibilityOf(schedule.id)}
-  //       key={schedule.id}
-  //     />
-  //   )}
-  // </div>
   )
 }
 
